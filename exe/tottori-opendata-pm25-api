@@ -3,9 +3,16 @@
 require 'tottori-opendata-pm25-api'
 require 'time'
 require 'json'
+require 'active_support/json'
+
+ActiveSupport::JSON::Encoding.use_standard_json_time_format = true
 
 def time
   ARGV[0] ? Time.iso8601(ARGV[0]) : Time.now
 end
 
-puts Tottori::OpenData::PM25::API.get(time).to_json
+def data
+  Tottori::OpenData::PM25::API.get(time)
+end
+
+puts data.to_json
