@@ -1,41 +1,46 @@
-# Tottori::Opendata::Pm25::Api
+# Tottori OpenData PM2.5 API
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/tottori/opendata/pm25/api`. To experiment with that code, run `bin/console` for an interactive prompt.
+[![Gem Version](https://badge.fury.io/rb/tottori-opendata-pm25-api.svg)](https://badge.fury.io/rb/tottori-opendata-pm25-api)
 
-TODO: Delete this and the text above, and describe your gem
+This API gets data which is the concentration of PM2.5 (fine particulate matter) in the atmosphere in Tottori Prefecture, Japan from http://tottori-taiki.users.tori-info.co.jp/taiki/pc/graph/ as Open Data licensed [CC-BY](https://creativecommons.org/licenses/by/2.1/jp/).
 
 ## Installation
 
-Add this line to your application's Gemfile:
 
-```ruby
-gem 'tottori-opendata-pm25-api'
+```bash
+$ gem install tottori-opendata-pm25-api
 ```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install tottori-opendata-pm25-api
 
 ## Usage
 
-TODO: Write usage instructions here
+CLI:
 
-## Development
+```bash
+$ tottori-opendata-pm25-api | jq . | head
+[
+  {
+    "name": "県庁西町分庁舎",
+    "values": [
+      {
+        "time": "2017-01-23T00:00:00.000+09:00",
+        "value": 9
+      },
+      {
+        "time": "2017-01-23T01:00:00.000+09:00",
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+API:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```ruby
+require 'tottori-opendata-pm25-api'
+require 'time'
+require 'json'
+require 'active_support/json'
 
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/Masayuki Higashino/tottori-opendata-pm25-api.
-
+ActiveSupport::JSON::Encoding.use_standard_json_time_format = true
+puts Tottori::OpenData::PM25::API.get(Time.now).to_json
+```
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
