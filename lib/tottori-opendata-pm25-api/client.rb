@@ -23,7 +23,7 @@ def get(t = Time.now)
   content = HTTPClient.get_content(uri)
   # Parse
   doc = Nokogiri::HTML.parse(content)
-  # Scraping
+  # Scrap
   data = []
   doc.xpath('//table[@class="commonTable"]/tbody/tr').each do |tr|
     row = tr.children
@@ -31,13 +31,13 @@ def get(t = Time.now)
     values = row.map{ |c|
       s = c.text.strip
       s.empty? ? nil : s.to_i
-    }.map.with_index do |value, i|
+    }.map.with_index{ |value, i|
       iso8601_time = ('%4d-%02d-%02dT%02d:00:00+09:00' % [date.year, date.month, date.day, i]).strip
       {
         time: Time.iso8601(iso8601_time),
         value: value
       }
-    end
+    }
     record = {
       name: name,
       values: values
