@@ -15,6 +15,7 @@ def get(t = Time.now)
   uri << [
     'mode=table',
     'graph=hour',
+    'item=021',
     "date=#{date.strftime('%Y%m%d')}",
     (1..6).map{ |i| 'term[]=%03d' % i }.join('&')
   ].join('&')
